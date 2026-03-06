@@ -3,6 +3,7 @@ import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from './domain/repositories/user.repository.interface';
 import type { IUserRepository } from './domain/repositories/user.repository.interface';
 import { CreateUserDto } from './DTO/create-user-dto';
+import { hashPassword } from 'src/utils/hash';
 
 @Injectable()
 export class UsersService {
@@ -20,11 +21,12 @@ export class UsersService {
     }
 
     const address = await this.addressService.findAddressByCep(data.cep);
+    const hashedPassword = await hashPassword(data.password);
 
     const user = await this.userRepository.create({
       name: data.name,
       email: data.email,
-      password: data.password,
+      password: hashedPassword,
       street: address.street,
       neighborhood: address.neighborhood,
       city: address.city,

@@ -13,10 +13,12 @@ export class AuthService {
 
   async login(data: LoginDto) {
     const user = await this.usersService.findByEmail(data.email);
-    if (!user || user.password !== data.password) {
+    if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
+    console.log(user);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const passwordMatch = await comparePassword(data.password, user.password);
     if (!passwordMatch) {
       throw new UnauthorizedException('Invalid email or password');

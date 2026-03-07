@@ -35,7 +35,29 @@ export class UsersController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'List all users' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users retrieved successfully.',
+    type: [UserResponseDto],
+  })
   list() {
     return this.usersService.listUsers();
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Find user by email' })
+  @ApiResponse({
+    status: 200,
+    description: 'User retrieved successfully.',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.',
+    type: String,
+  })
+  findByEmail(@Body('email') email: string) {
+    return this.usersService.findByEmail(email);
   }
 }

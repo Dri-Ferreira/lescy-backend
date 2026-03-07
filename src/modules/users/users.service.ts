@@ -44,4 +44,7 @@ export class UsersService {
   async listUsers() {
     return this.userRepository.findMany();
   }
+  async findByEmail(email: string) {
+    return this.userRepository.findByEmail(email);
+  }
 }
